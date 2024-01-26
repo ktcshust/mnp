@@ -1,36 +1,29 @@
-// SignIn.js
 import { useState } from "react";
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { db } from "./firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import { useNavigate, Link } from "react-router-dom";  // Import Link from react-router-dom
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState();
-  const navigate = useNavigate(); // Replace useHistory with useNavigate
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSignIn = async () => {
     try {
-      const auth = getAuth();
-      await signInWithEmailAndPassword(auth, email, password);
-
-      // Chuyển hướng sang trang MainPage sau khi đăng nhập thành công
-      navigate("/fashion"); // Use navigate instead of history.push
+      // Kiểm tra xem người dùng có phải là admin hay không
+      if (email === "admin@example.com" && password === "123") {
+        // Nếu là admin, chuyển hướng sang trang FashionManager
+        navigate("/fashionmanager");
+      } else {
+        // Nếu không phải là admin, sử dụng getAuth để đăng nhập thông thường
+        const auth = getAuth();
+        await signInWithEmailAndPassword(auth, email, password);
+        
+        // Chuyển hướng sang trang Fashion sau khi đăng nhập thành công
+        navigate("/fashion");
+      }
     } catch (error) {
       console.error("Error signing in:", error);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      const auth = getAuth();
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-
-      // Chuyển hướng sang trang MainPage sau khi đăng nhập thành công
-      navigate("/fashion"); // Use navigate instead of history.push
-    } catch (error) {
-      console.error("Error signing in with Google:", error);
     }
   };
 
@@ -50,12 +43,16 @@ const SignIn = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button onClick={handleSignIn}>Sign In</button>
-      <button onClick={handleGoogleSignIn}>Sign In with Google</button>
+      
+      {/* Add the link to the Sign Up page */}
+      <p>Don't have an account? <Link to="/signup">Sign Up!</Link></p>
     </div>
   );
 };
 
 export default SignIn;
+
+
 
 
 

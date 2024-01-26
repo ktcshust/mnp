@@ -1,10 +1,14 @@
 // SignUp.js
 import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from './firebaseConfig';
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSignUp = async () => {
     try {
@@ -17,7 +21,15 @@ const SignUp = () => {
 
       // Lưu thông tin người dùng vào Firestore
       const user = userCredential.user;
-      // Thêm mã xử lý Firestore ở đây để lưu thông tin người dùng
+      const userDocRef = doc(db, "mails", user.uid);
+
+      await setDoc(userDocRef, {
+        email: email,
+        password: password,
+        // Thêm các trường dữ liệu khác nếu cần
+      });
+
+      navigate("/profile");
     } catch (error) {
       console.error("Error signing up:", error);
     }
