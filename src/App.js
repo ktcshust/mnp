@@ -10,7 +10,7 @@ const App = () => {
     <Router>
       <Switch>
         <Route path="/signup" component={SignUp} />
-        <Route path="/signin" component={SignIn} />
+        <Route path="/" component={SignIn} />
         <Route exact path="/fashion" render={() => <FashionList fashionItems={fashionItems} />} />
         <Route path="/fashion/:id" render={(props) => <FashionDetail {...props} fashionItems={fashionItems} />} />
       </Switch>
