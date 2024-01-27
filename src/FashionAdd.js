@@ -45,7 +45,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
           description: description,
         });
   
-        navigate(`/fashion/${newItemRef.id}`);
+        navigate(`/fashionmanager`);
       } catch (error) {
         console.error('Error adding fashion item', error);
       }

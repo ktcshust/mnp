@@ -30,6 +30,11 @@ const FashionList = () => {
         <Link to="/profile">
           <BsPersonFill size={30} />
         </Link>
+        <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', right: '60px' }}>
+          <Link to="/updateprofile">Update Profile</Link>
+          <Link to="/favoritelist">Favorite List</Link>
+          <Link to="/ratinglist">Rating List</Link>
+        </div>
       </div>
       <ul>
         {fashionItems.map((item) => (

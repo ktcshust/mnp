@@ -4,6 +4,7 @@ import { db } from './firebaseConfig'; // Assuming db is the Firestore instance
 import { doc, setDoc } from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 import { storage } from './firebaseConfig'; // Assuming storage is also part of your firebaseConfig
+import { useNavigate } from "react-router-dom";
 
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -20,6 +21,7 @@ const Profile = () => {
   const [job, setJob] = useState("");
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState(null);
+  const navigate = useNavigate();
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -80,6 +82,7 @@ const Profile = () => {
   
       // Chuyển hướng hoặc thực hiện các công việc khác sau khi lưu thông tin
       console.log("Profile information saved successfully!");
+      navigate("/")
     } catch (error) {
       console.error("Error saving profile information:", error);
     }
