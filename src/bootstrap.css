@@ -1,0 +1,42 @@
+/* src/bootstrap.css */
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+/* Tùy chỉnh styles */
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Navbar giống Twitter */
+.navbar {
+  background-color: #1DA1F2;
+}
+
+.navbar-brand,
+.navbar-nav .nav-link {
+  color: #fff !important;
+}
+
+/* Button giống Twitter */
+.btn-primary {
+  background-color: #1DA1F2;
+  border-color: #1DA1F2;
+}
+
+.btn-primary:hover {
+  background-color: #0F81C7;
+  border-color: #0F81C7;
+}
+
+/* Căn giữa các phần tử */
+.d-flex {
+  display: flex !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}

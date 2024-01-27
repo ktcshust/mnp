@@ -12,6 +12,7 @@ import Profile from './Profile';
 import FavoritesPage from './FavoritesPage';
 import RatingsPage from './RatingsPage';
 import UpdateProfile from './UpdateProfile';
+import TryOn from './TryOn';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/favoritelist" element={<FavoritesPage />} />
         <Route path="/ratinglist" element={<RatingsPage />} />
         <Route path="/updateprofile" element={<UpdateProfile />} />
+        <Route path="/try-on" element={<TryOn />} />
       </Routes>
     </Router>
   );

@@ -32,6 +32,7 @@ const FashionList = () => {
         </Link>
         <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', right: '60px' }}>
           <Link to="/updateprofile">Update Profile</Link>
+          <Link to="/try-on">Try Try-On</Link>
           <Link to="/favoritelist">Favorite List</Link>
           <Link to="/ratinglist">Rating List</Link>
         </div>
