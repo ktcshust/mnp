@@ -27,12 +27,11 @@ const FashionUpdate = () => {
         if (itemData.exists()) {
           const item = itemData.data();
           setItemName(item.name);
-          setYearOfOrigin(item.yearOfOrigin);
+          setYearOfOrigin(item.yearOfOrigin.toString());
           setBrand(item.brand);
-          setPrice(item.price);
+          setPrice(item.price.toString());
           setColor(item.color);
           setDescription(item.description);
-    
         } else {
           console.error('Fashion item not found');
         }
@@ -51,6 +50,9 @@ const FashionUpdate = () => {
 
   const handleUpdateItem = async () => {
     try {
+      const yearOfOriginNumber = parseInt(yearOfOrigin, 10);
+      const priceNumber = parseFloat(price);
+
       let imageUrl = null;
       if (image) {
         const storageRef = ref(storage, `fashion-images/${itemName}`);
@@ -60,18 +62,17 @@ const FashionUpdate = () => {
         imageUrl = await getDownloadURL(imageRef);
       }
 
-      // Update fashion item in firestore
       const itemDoc = doc(db, 'fashionItems', id);
       await updateDoc(itemDoc, {
         name: itemName,
         imageUrl: imageUrl,
-        yearOfOrigin: yearOfOrigin,
+        yearOfOrigin: yearOfOriginNumber,
         brand: brand,
-        price: price,
+        price: priceNumber,
         color: color,
         description: description,
       });
-      navigate("/fashionmanager")
+      navigate("/fashionmanager");
     } catch (error) {
       console.error('Error updating fashion item', error);
     }
@@ -92,7 +93,7 @@ const FashionUpdate = () => {
       <br />
       <label>
         Year of Origin:
-        <input type="text" value={yearOfOrigin} onChange={(e) => setYearOfOrigin(e.target.value)} />
+        <input type="number" value={yearOfOrigin} onChange={(e) => setYearOfOrigin(e.target.value)} />
       </label>
       <br />
       <label>
@@ -102,7 +103,7 @@ const FashionUpdate = () => {
       <br />
       <label>
         Price:
-        <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
+        <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
       </label>
       <br />
       <label>
@@ -121,5 +122,6 @@ const FashionUpdate = () => {
 };
 
 export default FashionUpdate;
+
 
 

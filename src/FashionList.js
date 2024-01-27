@@ -1,18 +1,18 @@
-// src/components/FashionList.js
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BsPersonFill } from 'react-icons/bs';
-import { collection, getDocs} from 'firebase/firestore';
+import { getDocs, query, where, collection } from 'firebase/firestore';
 import { db } from './firebaseConfig'; // Update the path accordingly
 
 const FashionList = () => {
   const [fashionItems, setFashionItems] = useState([]);
+  const [filters, setFilters] = useState({ name: '', minPrice: '', maxPrice: '', minYear: '', maxYear: '' });
 
   useEffect(() => {
     const fetchFashionItems = async () => {
       try {
-        const collectionRef = collection(db, 'fashionItems'); // Use db from firebaseConfig
-        const data = await getDocs(collectionRef);
+        const q = buildQuery(filters); // Build query based on filters
+        const data = await getDocs(q);
         const items = data.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setFashionItems(items);
       } catch (error) {
@@ -21,7 +21,46 @@ const FashionList = () => {
     };
 
     fetchFashionItems();
-  }, []);
+  }, [filters]); // Run effect whenever filters change
+
+  const buildQuery = (filters) => {
+    let q = query(collection(db, 'fashionItems'));
+  
+    // Apply filters
+    if (filters.name.trim() !== '') {
+      // Split the search query into individual words
+      const searchKeywords = filters.name.trim().toLowerCase().split(/\s+/);
+  
+      // Use array-contains for each keyword
+      searchKeywords.forEach((keyword) => {
+        q = query(q, where('name', 'array-contains', keyword));
+      });
+    }
+  
+    if (filters.minPrice.trim() !== '') {
+      q = query(q, where('price', '>=', parseInt(filters.minPrice)));
+    }
+  
+    if (filters.maxPrice.trim() !== '') {
+      q = query(q, where('price', '<=', parseInt(filters.maxPrice)));
+    }
+  
+    if (filters.minYear.trim() !== '') {
+      q = query(q, where('year', '>=', parseInt(filters.minYear)));
+    }
+  
+    if (filters.maxYear.trim() !== '') {
+      q = query(q, where('year', '<=', parseInt(filters.maxYear)));
+    }
+  
+    return q;
+  };
+  
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  };
 
   return (
     <div>
@@ -37,6 +76,37 @@ const FashionList = () => {
           <Link to="/ratinglist">Rating List</Link>
         </div>
       </div>
+
+      <div>
+        <h3>Filter:</h3>
+        <form>
+          <label>
+            Name:
+            <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
+          </label>
+
+          <label>
+            Min Price:
+            <input type="number" name="minPrice" value={filters.minPrice} onChange={handleFilterChange} />
+          </label>
+
+          <label>
+            Max Price:
+            <input type="number" name="maxPrice" value={filters.maxPrice} onChange={handleFilterChange} />
+          </label>
+
+          <label>
+            Min Year:
+            <input type="number" name="minYear" value={filters.minYear} onChange={handleFilterChange} />
+          </label>
+
+          <label>
+            Max Year:
+            <input type="number" name="maxYear" value={filters.maxYear} onChange={handleFilterChange} />
+          </label>
+        </form>
+      </div>
+
       <ul>
         {fashionItems.map((item) => (
           <li key={item.id}>
@@ -52,4 +122,5 @@ const FashionList = () => {
 };
 
 export default FashionList;
+
 
